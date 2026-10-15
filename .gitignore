@@ -1,0 +1,56 @@
+# ---- This repository is PUBLIC. Never commit course files or exam material. ----
+# Course files (PDF lectures, problem sets, solutions, datasets, notebooks, archives)
+*.pdf
+*.zip
+*.ipynb
+*.rar
+*.7z
+*.pptx
+*.ppt
+*.docx
+*.doc
+*.xlsx
+*.mat
+# Exam material: past papers, worked past-paper answers, the past-papers log
+**/Past Papers/
+**/Past Papers Log.md
+**/*Past Paper*
+**/*past paper*
+**/*Proxy Paper*
+**/*Exam Style and Proxy*
+# Assignment 2 working data (your selfies, PIE images) if you ever put them in the vault
+**/PIE/
+**/selfies/
+
+# Obsidian: keep the shared config, drop per-device state
+vault/**/.obsidian/workspace*.json
+vault/**/.obsidian/cache
+vault/**/.obsidian/plugins/*/data.json
+vault/**/.trash/
+.obsidian/workspace*.json
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# Node / build output
+node_modules/
+site/dist/
+*.log
+
+# Server data, secrets, backups
+.env
+server/data/
+server/backups/
+*.db
+*.db-wal
+*.db-shm
+*.secret
+
+# OS / editor
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/

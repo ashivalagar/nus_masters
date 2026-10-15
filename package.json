@@ -1,0 +1,20 @@
+{
+  "name": "nus-masters",
+  "version": "1.0.0",
+  "private": true,
+  "description": "NUS MSc EE study vault, its learning site, and a small self-hosted progress server",
+  "type": "module",
+  "workspaces": ["site"],
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "build": "node site/build.mjs",
+    "start": "node scripts/start.mjs",
+    "start:local": "node scripts/start.mjs --insecure-local",
+    "dev": "node scripts/dev.mjs",
+    "backup": "node server/backup.mjs",
+    "test": "node site/scripts/test-labs.mjs && node server/test/api-test.mjs",
+    "test:labs": "node site/scripts/test-labs.mjs",
+    "test:server": "node server/test/api-test.mjs",
+    "verify": "node site/scripts/verify.mjs"
+  }
+}
