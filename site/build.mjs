@@ -281,7 +281,7 @@ function conceptPage(n, i) {
 </article>
 ${ladder}
 </div>`;
-  emit(n.url, { current: 'concept:' + n.slug, title: n.displayTitle, description: n.text.slice(0, 150), body, bodyClass: 'page-concept', labs: n.r.labs.length > 0 });
+  emit(n.url, { current: 'concept:' + n.slug, title: n.displayTitle, description: Array.from(n.text).slice(0, 150).join(""), body, bodyClass: 'page-concept', labs: n.r.labs.length > 0 });
 }
 
 function notePage(n) {
@@ -295,7 +295,7 @@ function notePage(n) {
   ${n.r.html}
   ${bl.length ? `<section class="backlinks"><h2>Linked from</h2><ul>${bl.map((b) => `<li><a href="${R}${b.url}">${e(b.displayTitle)}</a></li>`).join('')}</ul></section>` : ''}
 </article>`;
-  emit(n.url, { current: 'note:' + n.slug, title: n.displayTitle, description: n.text.slice(0, 150), body, bodyClass: 'page-note', labs: n.r.labs.length > 0 });
+  emit(n.url, { current: 'note:' + n.slug, title: n.displayTitle, description: Array.from(n.text).slice(0, 150).join(""), body, bodyClass: 'page-note', labs: n.r.labs.length > 0 });
 }
 
 // ------------------------------------------------------------------ home
@@ -368,8 +368,8 @@ function fmtDate(iso) { return new Date(iso + 'T00:00:00+08:00').toLocaleDateStr
 function conceptsIndex() {
   const groups = GROUP_ORDER.map((t) => `<section class="cgroup cgroup-${t}"><h2>${trackChip(t, TRACKS[t].name)}</h2><ul class="concept-list">${concepts.filter((c) => c.track === t).map((c) => {
     const first = (c.r.html.match(/<section class="mental-picture"[\s\S]*?<li>([\s\S]*?)<\/li>/) || [])[1] || '';
-    const hook = first.replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim().slice(0, 140);
-    return `<li class="concept-item" data-tags="${e(c.tags.join(' '))}" data-track="${c.track}" data-slug="${c.slug}"><a href="${c.url}"><span class="ci-state" data-mastery-dot="${c.slug}" title="Mastery"></span><span class="ci-title">${e(c.displayTitle)}</span><span class="ci-badges">${tagBadges(c.tags)}${c.r.labs.length ? '<span class="badge badge-lab">Lab</span>' : ''}</span>${hook ? `<span class="ci-hook">${e(hook)}${hook.length >= 140 ? '…' : ''}</span>` : ''}</a></li>`;
+    const hook = first.replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim(); const hookClip = Array.from(hook).slice(0, 140).join('');
+    return `<li class="concept-item" data-tags="${e(c.tags.join(' '))}" data-track="${c.track}" data-slug="${c.slug}"><a href="${c.url}"><span class="ci-state" data-mastery-dot="${c.slug}" title="Mastery"></span><span class="ci-title">${e(c.displayTitle)}</span><span class="ci-badges">${tagBadges(c.tags)}${c.r.labs.length ? '<span class="badge badge-lab">Lab</span>' : ''}</span>${hook ? `<span class="ci-hook">${e(hookClip)}${hook.length >= 140 ? '…' : ''}</span>` : ''}</a></li>`;
   }).join('')}</ul></section>`).join('');
   const body = `
 <article class="concepts-index">
@@ -506,7 +506,7 @@ function stepLabel(st) {
 write('assets/data.js', `window.MM=${JSON.stringify(pub)};`);
 
 const index = [
-  ...notes.map((n) => ({ t: n.displayTitle, u: n.url, k: n.type === 'concept' ? 'Concept' : 'Note', c: n.track, h: n.r.headings.map((h) => h.text).join(' | '), x: n.text.slice(0, 4000), g: n.tags.join(' ') })),
+  ...notes.map((n) => ({ t: n.displayTitle, u: n.url, k: n.type === 'concept' ? 'Concept' : 'Note', c: n.track, h: n.r.headings.map((h) => h.text).join(' | '), x: Array.from(n.text).slice(0, 4000).join(""), g: n.tags.join(' ') })),
   ...WEEKS.map((w) => ({ t: `${w.short}: ${w.title}`, u: `weeks/${w.id}.html`, k: 'Week', c: 'general', h: w.sessions.map((s) => `${s.label} ${s.title}`).join(' | '), x: w.blurb + ' ' + w.dates, g: '' })),
   ...LABS.map((l) => ({ t: `Lab ${l.id.slice(0, 2)}: ${l.title}`, u: `labs/${l.id}.html`, k: 'Lab', c: ((labConcepts.get(l.id) || [])[0] && bySlug.get(labConcepts.get(l.id)[0]).track) || 'general', h: '', x: l.idea + ' ' + (l.keywords || ''), g: '' })),
   { t: 'Review flashcards', u: 'review.html', k: 'Page', c: 'general', h: '', x: 'Leitner flashcards self-test review', g: '' },
